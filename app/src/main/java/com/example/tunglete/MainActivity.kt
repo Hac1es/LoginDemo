@@ -5,10 +5,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 
 class MainActivity : AppCompatActivity() {
 
-    // Khai báo biến (Giống private Button btnLogin; trong C#)
+    // Khai báo biến
     lateinit var db: DBHelper
     lateinit var etUser: EditText
     lateinit var etPass: EditText
@@ -17,18 +18,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main) // Load file XML ở bước 1 lên
+        setContentView(R.layout.activity_main) // Load file XML
 
-        // 1. Khởi tạo DB
+        // Khởi tạo DB
         db = DBHelper(this)
 
-        // 2. Ánh xạ (Binding) - Tìm control theo ID đã đặt trong XML
+        // Ánh xạ (Binding) - Tìm control theo ID đã đặt trong XML
         etUser = findViewById(R.id.etUsername)
         etPass = findViewById(R.id.etPassword)
         btnLogin = findViewById(R.id.btnLogin)
         btnReg = findViewById(R.id.btnRegister)
 
-        // 3. Sự kiện Click nút Đăng Ký
+        // Sự kiện Click nút Đăng Ký
         btnReg.setOnClickListener {
             val user = etUser.text.toString()
             val pass = etPass.text.toString()
@@ -64,19 +65,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
-        // 4. Sự kiện Click nút Login
-        // 4. Sự kiện Click nút Login
+        // Sự kiện Click nút Login
         btnLogin.setOnClickListener {
             val user = etUser.text.toString()
             val pass = etPass.text.toString()
             val view = findViewById<android.view.View>(android.R.id.content)
 
-            // --- BẮT ĐẦU LOGIC MỚI ---
-
-            // 1. Kiểm tra xem user có tồn tại không
+            // Kiểm tra xem user có tồn tại không
             if (db.checkUsernameExists(user)) {
-                // 2. Nếu user tồn tại, kiểm tra tiếp mật khẩu
+                // Nếu user tồn tại, kiểm tra tiếp mật khẩu
                 if (db.checkUser(user, pass)) {
                     // MẬT KHẨU ĐÚNG -> ĐĂNG NHẬP THÀNH CÔNG
                     val snackbarSuccess = com.google.android.material.snackbar.Snackbar.make(view, "Đăng nhập thành công!", com.google.android.material.snackbar.Snackbar.LENGTH_LONG)
@@ -85,6 +82,11 @@ class MainActivity : AppCompatActivity() {
                     snackbarSuccess.setActionTextColor(android.graphics.Color.WHITE)
                     snackbarSuccess.show()
                     etPass.text.clear()
+                    // Tạo Intent để chuyển sang ProfileActivity
+                    val intent = Intent(this, ProfileActivity::class.java)
+                    // Gửi kèm tên người dùng sang màn hình mới
+                    intent.putExtra("USERNAME_EXTRA", user)
+                    startActivity(intent)
                 } else {
                     // MẬT KHẨU SAI -> BÁO LỖI SAI MẬT KHẨU
                     val snackbarError = com.google.android.material.snackbar.Snackbar.make(view, "Sai mật khẩu!", com.google.android.material.snackbar.Snackbar.LENGTH_LONG)
@@ -96,7 +98,7 @@ class MainActivity : AppCompatActivity() {
                     etPass.text.clear()
                 }
             } else {
-                // 3. Nếu user KHÔNG tồn tại -> GỢI Ý ĐĂNG KÝ
+                // Nếu user KHÔNG tồn tại -> GỢI Ý ĐĂNG KÝ
                 val snackbarRegister = com.google.android.material.snackbar.Snackbar.make(view, "Tài khoản không tồn tại!", com.google.android.material.snackbar.Snackbar.LENGTH_LONG)
 
                 // Thêm hành động "Đăng ký"
@@ -109,7 +111,6 @@ class MainActivity : AppCompatActivity() {
                 snackbarRegister.setActionTextColor(android.graphics.Color.YELLOW)
                 snackbarRegister.show()
             }
-            // --- KẾT THÚC LOGIC MỚI ---
         }
     }
 }
