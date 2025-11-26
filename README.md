@@ -17,7 +17,7 @@
 ## Demo
 
 - **Đăng ký tài khoản:** Nhập tên, mật khẩu và nhấn nút **Đăng ký**
-[Đăng ký tài khoản](demo/Register.png)
+![Đăng ký tài khoản](demo/Register.png)
 - **Đăng nhập:** Nhập tên, mật khẩu và nhấn nút **Đăng nhập**
 - **Đăng xuất**: Sau khi đăng nhập thành công, nhấn nút **Đăng xuất**
-[Đăng nhập](demo/Login.png)
+![Đăng nhập](demo/Login.png)
